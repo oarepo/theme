@@ -32,6 +32,8 @@ dependencies = [
 Documentation = "https://github.com/oarepo/theme#readme"
 Issues = "https://github.com/oarepo/theme/issues"
 Source = "https://github.com/oarepo/theme"
+Homepage = "https://github.com/oarepo/theme"
+
 
 [tool.hatch.version]
 path = "oarepo_theme/__init__.py"
@@ -66,4 +68,12 @@ exclude_lines = [
   "no cov",
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
+]
+
+[project.entry-points."invenio_assets.webpack"]
+oarepo_theme = "oarepo_theme.webpack:theme"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/oarepo_theme",
 ]
