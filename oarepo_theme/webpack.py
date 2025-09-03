@@ -15,6 +15,7 @@ theme = WebpackThemeBundle(
                 "../../less/site": "less/site",
                 "../../less": "less",
                 "@less": "less",
+                "themes/oarepo": "less/oarepo",
             },
         }
     },
