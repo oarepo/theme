@@ -28,6 +28,11 @@ dependencies = [
   "oarepo[rdm,tests]>=13,<14"
 ]
 
+[project.optional-dependencies]
+tests = [
+    "oarepo-runtime",
+]
+
 [project.urls]
 Documentation = "https://github.com/oarepo/theme#readme"
 Issues = "https://github.com/oarepo/theme/issues"
