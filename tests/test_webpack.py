@@ -8,6 +8,8 @@
 #
 """OARepo theme test suite for webpack integration."""
 
+from __future__ import annotations
+
 from oarepo_runtime.cli.assets import enumerate_assets
 
 

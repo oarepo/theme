@@ -12,6 +12,8 @@ See https://pytest-invenio.readthedocs.io/ for documentation on which test
 fixtures are available.
 """
 
+from __future__ import annotations
+
 import pytest
 from invenio_app.factory import create_ui as _create_ui
 

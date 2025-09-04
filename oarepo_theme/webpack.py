@@ -11,6 +11,8 @@
 This module provides webpack bundle project integration for OARepo SemanticUI theme.
 """
 
+from __future__ import annotations
+
 from invenio_assets.webpack import WebpackThemeBundle
 
 theme = WebpackThemeBundle(
