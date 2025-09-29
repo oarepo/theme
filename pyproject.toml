@@ -30,7 +30,7 @@ dependencies = [
 
 [project.optional-dependencies]
 tests = [
-    "oarepo-runtime",
+    "oarepo-runtime>=2.0.0dev34,<3",
 ]
 
 [project.urls]
