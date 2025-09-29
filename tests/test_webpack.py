@@ -9,6 +9,7 @@
 """OARepo theme test suite for webpack integration."""
 
 from __future__ import annotations
+
 from importlib.metadata import entry_points
 
 from flask import current_app
@@ -21,7 +22,7 @@ def enumerate_assets():
     aliases = {}
     themes = current_app.config["APP_THEME"] or ["semantic-ui"]
     project = current_webpack.project
-    if hasattr(project, 'generated_paths'):
+    if hasattr(project, "generated_paths"):
         generated_paths += project.generated_paths
 
     for ep in entry_points(group="invenio_assets.webpack"):
