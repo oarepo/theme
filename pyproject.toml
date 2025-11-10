@@ -67,6 +67,9 @@ testpaths = [
 [tool.coverage.paths]
 oarepo_theme = ["oarepo_theme", "*/oarepo-theme/oarepo_theme"]
 tests = ["tests", "*/oarepo-theme/tests"]
+oarepo14= [
+    "oarepo>=14.0.0,<15.0.0"
+]
 
 [tool.coverage.report]
 exclude_lines = [
