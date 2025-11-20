@@ -34,10 +34,10 @@ tests = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/oarepo/theme#readme"
-Issues = "https://github.com/oarepo/theme/issues"
-Source = "https://github.com/oarepo/theme"
-Homepage = "https://github.com/oarepo/theme"
+Documentation = "https://github.com/oarepo/oarepo-theme#readme"
+Issues = "https://github.com/oarepo/oarepo-theme/issues"
+Source = "https://github.com/oarepo/oarepo-theme"
+Homepage = "https://github.com/oarepo/oarepo-theme"
 
 
 [tool.hatch.version]
