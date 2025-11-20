@@ -33,6 +33,10 @@ tests = [
     "oarepo-runtime>=2.0.0dev34,<3",
 ]
 
+oarepo14= [
+    "oarepo>=14.0.0,<15.0.0"
+]
+
 [project.urls]
 Documentation = "https://github.com/oarepo/oarepo-theme#readme"
 Issues = "https://github.com/oarepo/oarepo-theme/issues"
