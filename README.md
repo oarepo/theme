@@ -1,6 +1,6 @@
 # OARepo Theme
 
-SemanticUI theme overlay for [Invenio](https://inveniosoftware.org/) framework based repositories.
+SemanticUI theme overlay for InvenioRDM based NRP repositories.
 
 ## Overview
 
@@ -15,8 +15,8 @@ pip install oarepo-theme
 ### Requirements
 
 - Python 3.13+
-- Invenio 14.x
-- OARepo 14.x
+- InvenioRDM v14.x
+- OARepo v14.x
 
 ## Key Features
 
@@ -40,7 +40,7 @@ from oarepo_theme.webpack import theme
 - Integration with Invenio's asset compilation pipeline
 - Support for custom theme overrides
 
-### 2. Theme Configuration System
+### 2. Theme Configuration
 
 **Source:** [`oarepo_theme/assets/semantic-ui/less/theme.config`](oarepo_theme/assets/semantic-ui/less/theme.config)
 
@@ -62,64 +62,51 @@ Centralized theme configuration that sets Semantic UI component themes:
 
 The configuration specifies which theme variant to use for each Semantic UI component, defaulting to the 'rdm' theme from Invenio-App-RDM.
 
-### 3. Custom Theme Override System
+### 3. Theme Override Order
 
-**Source:** [`oarepo_theme/assets/semantic-ui/less/oarepo/theme.less`](oarepo_theme/assets/semantic-ui/less/oarepo/theme.less)
+**Docs:** [`https://nrp-cz.github.io/docs/customize/repository_ui/branding/theme#theme-hierarchy`](https://nrp-cz.github.io/docs/customize/repository_ui/branding/theme#theme-hierarchy)
 
-Hierarchical theme loading system that supports multiple customization layers:
-
-```less
-/* Loading order (from lowest to highest priority): */
+Theme uses the SemanticUI theme layering system that supports multiple customization layers.
+Loading order (from lowest to highest priority):
 1. Default Semantic UI theme
-2. Packaged SUI theme
-3. Invenio-theme
-4. Invenio-App-RDM theme
-5. OARepo package themes (oarepo_ui, oarepo_vocabularies_ui, etc.)
-6. Custom component variables
-7. Site-specific overrides
-```
+2. Invenio-theme
+3. Invenio-App-RDM theme
+4. OARepo package themes (oarepo_theme, oarepo_ui, oarepo_vocabularies_ui, etc.)
+5. Site-specific overrides & custom component variables
 
 **Supported OARepo packages:**
 
-- `oarepo_ui` - Core UI components
-- `oarepo_vocabularies_ui` - Vocabulary management UI
-- `oarepo_dashboard` - Dashboard components
-- `oarepo_communities` - Community features
-- `oarepo_requests_ui` - Request workflow UI
+- [`oarepo_ui`](https://github.com/oarepo/oarepo-ui) - Core UI components
+- [`oarepo_vocabularies_ui`](https://github.com/oarepo/oarepo-vocabularies) - Vocabulary management UI
+- [`oarepo_dashboard`](https://github.com/oarepo/oarepo-dashboard) - Dashboard components
+- [`oarepo_communities`](https://github.com/oarepo/oarepo-communities) - Community features
+- [`oarepo_requests_ui`](https://github.com/oarepo/oarepo-requests) - Request workflow UI
 
 Each package can provide:
 
 - Component variables (`.variables` files)
 - Style overrides (`.overrides` files)
+- Custom SemanticUI (LESS) components
+
+On top of that, site specific style customizations can be made.
 
 ### 4. Webpack Aliases
 
-The theme bundle configures the following Webpack aliases for easy asset referencing:
+This theme bundle configures the following Webpack aliases for easy asset referencing:
 
 | Alias | Target | Purpose |
 |-------|--------|---------|
-| `../../theme.config$` | `less/theme.config` | Theme configuration file |
-| `../../less/site` | `less/site` | Site-specific styles |
+| `../../theme.config$` | `less/theme.config` | Main theme configuration file |
+| `../../less/site` | `less/site` | Site-specific styles & overrides |
 | `../../less` | `less` | Less source directory |
-| `@less` | `less` | Less imports shorthand |
+| `@less` | `less` | Less imports shorthand pointing to correct less sources |
 | `themes/oarepo` | `less/oarepo` | OARepo theme directory |
 
-Usage in Less files:
+Usage in `.less` files:
 
 ```less
-@import "@less/oarepo/custom-component.less";
-@import "themes/oarepo/theme.less";
+@import "@less/oarepo/theme.less";
 ```
-
-### 5. Custom Template Support
-
-**Source:** [`oarepo_theme/assets/semantic-ui/templates/`](oarepo_theme/assets/semantic-ui/templates/)
-
-The package provides template directories for customizing UI components:
-
-- `custom_fields/` - Templates for custom field rendering
-
-Templates can be overridden in your application by placing files in the same structure.
 
 ## Development
 
@@ -142,10 +129,8 @@ cd oarepo-theme
 Or run specific test file:
 
 ```bash
-pytest tests/test_webpack.py -s
+./run.sh test tests/test_webpack.py -s
 ```
-
-### Testing Theme Integration
 
 The package includes tests that verify:
 
@@ -156,11 +141,11 @@ The package includes tests that verify:
 
 See [`tests/test_webpack.py`](tests/test_webpack.py) for examples.
 
-## Integration with OARepo Applications
+## Usage in NRP repositories
 
-### Using the Theme in Your Application
+### Runtime usage
 
-The theme is automatically registered via Invenio entry points when installed:
+When you generate a new NRP repository based on InvenioRDM, the theme is automatically installed and registered for use via Invenio entry points
 
 ```python
 [project.entry-points."invenio_assets.webpack"]
@@ -169,11 +154,32 @@ oarepo_theme = "oarepo_theme.webpack:theme"
 
 No additional configuration is needed - the theme will be available after installation.
 
+### Usage in tests
+
+This theme package can be also used for front-end development & tests (Storybook), so that the tested UI shares
+the same styles as in the runtime.
+
+When developing a UI-oriented library, include a dependency to your `tests` package extras:
+
+```toml
+#pyproject.toml
+tests = [
+    "pytest>=7.1.2",
+    "oarepo-theme>=1.0.0dev1,<2.0.0",
+    # ...
+]
+```
+
+Then you can set-up Storybook tests to use this theme package:
+```shell
+./run.sh jstest setup --with-storybook
+```
+
 ### Customizing the Theme
 
 To customize the theme in your application:
 
-1. **Override variables:** Create files in your app's `assets/less/` directory:
+1. **Override variables:** Create files in your app's `/assets/less/` directory:
 
    ```less
    /* assets/less/globals/site.variables */
@@ -190,16 +196,7 @@ To customize the theme in your application:
    }
    ```
 
-3. **Extend component themes:** Add package-specific overrides following the pattern in `theme.less`.
-
-### Building Assets
-
-After making theme changes:
-
-```bash
-# In your Invenio application
-invenio webpack buildall
-```
+For more in-depth guide to theme customization, please refer to the official [Theme Customization Docs](https://nrp-cz.github.io/docs/customize/repository_ui/branding/theme).
 
 ## Entry Points
 
@@ -212,45 +209,6 @@ oarepo_theme = "oarepo_theme.webpack:theme"
 
 This entry point is automatically discovered by Invenio and makes the theme available to the asset compilation system.
 
-## Architecture
-
-### Theme Loading Hierarchy
-
-The theme system follows a cascading architecture where each layer can override the previous ones:
-
-```text
-Semantic UI Default
-    ↓
-Packaged Theme (e.g., 'default', 'rdm')
-    ↓
-Invenio Theme (invenio-theme)
-    ↓
-Invenio-App-RDM Theme
-    ↓
-OARepo Package Themes (oarepo_ui, oarepo_vocabularies_ui, etc.)
-    ↓
-Site Custom Components
-    ↓
-Application-Specific Overrides
-```
-
-This allows for maximum flexibility while maintaining consistency across OARepo applications.
-
-### Asset Organization
-
-```text
-oarepo_theme/
-├── assets/
-│   └── semantic-ui/
-│       ├── less/
-│       │   ├── theme.config          # Theme component configuration
-│       │   └── oarepo/
-│       │       └── theme.less         # Custom theme loader
-│       └── templates/
-│           └── custom_fields/         # Custom field templates
-└── webpack.py                         # Webpack bundle definition
-```
-
 ## License
 
 Copyright (c) 2025 CESNET z.s.p.o.
@@ -262,8 +220,8 @@ OARepo Theme is free software; you can redistribute it and/or modify it under th
 - Documentation: <https://github.com/oarepo/oarepo-theme>
 - PyPI: <https://pypi.org/project/oarepo-theme/>
 - Issues: <https://github.com/oarepo/oarepo-theme/issues>
-- OARepo Project: <https://github.com/oarepo>
+- NRP Invenio Docs: <https://nrp-cz.github.io/docs/>
 
 ## Acknowledgments
 
-This project builds upon [Invenio Framework](https://inveniosoftware.org/) and [Semantic UI](https://semantic-ui.com/), and is developed as part of the OARepo ecosystem.
+This project builds upon [Invenio Framework](https://inveniosoftware.org/) and [Semantic UI](https://semantic-ui.com/), and is developed as part of the NRP-CZ ecosystem.
