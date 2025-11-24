@@ -24,14 +24,7 @@ pip install oarepo-theme
 
 **Source:** [`oarepo_theme/webpack.py`](oarepo_theme/webpack.py)
 
-The package provides a `WebpackThemeBundle` that integrates with Invenio's asset management system:
-
-```python
-from oarepo_theme.webpack import theme
-
-# The theme bundle is automatically loaded via entry points
-# It provides Semantic UI theme configuration with custom aliases
-```
+The package provides a `WebpackThemeBundle` that integrates with Invenio's asset management system.
 
 **Key capabilities:**
 
@@ -101,12 +94,6 @@ This theme bundle configures the following Webpack aliases for easy asset refere
 | `../../less` | `less` | Less source directory |
 | `@less` | `less` | Less imports shorthand pointing to correct less sources |
 | `themes/oarepo` | `less/oarepo` | OARepo theme directory |
-
-Usage in `.less` files:
-
-```less
-@import "@less/oarepo/theme.less";
-```
 
 ## Development
 
